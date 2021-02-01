@@ -1,7 +1,7 @@
 import json
 import os
 from pathlib import Path
-
+from tqdm import tqdm
 
 import numpy as np
 
@@ -12,9 +12,7 @@ from visualize_f import visualize_trajectory, visualize_heatmap, save_figure_to_
 
 def calibrate_magnetic_wifi_ibeacon_to_position(path_file_list):
     mwi_datas = {}
-    for path_filename in path_file_list:
-        print(f'Processing {path_filename}...')
-
+    for path_filename in tqdm(path_file_list):
         path_datas = read_data_file(path_filename)
         acce_datas = path_datas.acce
         magn_datas = path_datas.magn
