@@ -126,7 +126,7 @@ def extract_wifi_rssi_custom(mwi_datas):
             xpos,ypos = position_key[0],position_key[1]
             
             if bssid in wifi_rssi:
-                wifi_rssi[bssid] = np.append(wifi_rssi[bssid], np.array([xpos,ypos,rssi]),axis=0)
+                wifi_rssi[bssid] = np.vstack([wifi_rssi[bssid],np.array([xpos,ypos,rssi])])
             else:
                 wifi_rssi[bssid] = np.array([xpos,ypos,rssi])
 
