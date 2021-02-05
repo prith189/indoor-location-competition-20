@@ -153,39 +153,40 @@ def read_data_file(data_filename):
     return ReadData(acce, acce_uncali, gyro, gyro_uncali, magn, magn_uncali, ahrs, wifi, ibeacon, waypoint)
 
 
-def read_data_file_custom(data_filename):
+def read_data_file_custom(data_filelist):
     wifi = []
-    waypoint_seen = False
-    waypoint_x = None
-    waypoint_y = None
-    waypoint_ts = None
-    with open(data_filename, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
+    for data_filename in data_filelist:
+        waypoint_seen = False
+        waypoint_x = None
+        waypoint_y = None
+        waypoint_ts = None
+        with open(data_filename, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
 
-    for line_data in lines:
-        line_data = line_data.strip()
-        if not line_data or line_data[0] == '#':
-            continue
-
-        line_data = line_data.split('\t')
-
-        if(waypoint_seen):
-            if line_data[1] == 'TYPE_WIFI':
-                sys_ts = int(line_data[0])
-                ssid = line_data[2]
-                bssid = line_data[3]
-                rssi = int(line_data[4])
-                lastseen_ts = int(line_data[6])
-                waypoint_age = max(0,sys_ts-waypoint_ts)
-                wifi_data = [sys_ts, ssid, bssid, rssi, lastseen_ts,waypoint_x,waypoint_y,waypoint_age]
-                wifi.append(wifi_data)
+        for line_data in lines:
+            line_data = line_data.strip()
+            if not line_data or line_data[0] == '#':
                 continue
 
-        if line_data[1] == 'TYPE_WAYPOINT':
-            waypoint_ts = int(line_data[0]) 
-            waypoint_x = float(line_data[2])
-            waypoint_y = float(line_data[3])
-            waypoint_seen = True
+            line_data = line_data.split('\t')
+
+            if(waypoint_seen):
+                if line_data[1] == 'TYPE_WIFI':
+                    sys_ts = int(line_data[0])
+                    ssid = line_data[2]
+                    bssid = line_data[3]
+                    rssi = int(line_data[4])
+                    lastseen_ts = int(line_data[6])
+                    waypoint_age = max(0,sys_ts-waypoint_ts)
+                    wifi_data = [sys_ts, ssid, bssid, rssi, lastseen_ts,waypoint_x,waypoint_y,waypoint_age]
+                    wifi.append(wifi_data)
+                    continue
+
+            if line_data[1] == 'TYPE_WAYPOINT':
+                waypoint_ts = int(line_data[0]) 
+                waypoint_x = float(line_data[2])
+                waypoint_y = float(line_data[3])
+                waypoint_seen = True
 
     wifi = np.array(wifi)
 
