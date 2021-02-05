@@ -156,6 +156,8 @@ def read_data_file(data_filename):
 def read_data_file_custom(data_filelist):
     wifi = []
     for data_filename in data_filelist:
+        site_id = data_filename.split('/')[-3]
+        floor_id = data_filename.split('/')[-2]
         waypoint_seen = False
         waypoint_x = None
         waypoint_y = None
@@ -178,7 +180,7 @@ def read_data_file_custom(data_filelist):
                     rssi = int(line_data[4])
                     lastseen_ts = int(line_data[6])
                     waypoint_age = max(0,sys_ts-waypoint_ts)
-                    wifi_data = [sys_ts, ssid, bssid, rssi, lastseen_ts,waypoint_x,waypoint_y,waypoint_age]
+                    wifi_data = [sys_ts, ssid, bssid, rssi, lastseen_ts,waypoint_x,waypoint_y,waypoint_age,site_id,floor_id]
                     wifi.append(wifi_data)
                     continue
 
