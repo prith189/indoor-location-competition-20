@@ -350,13 +350,13 @@ def compute_rel_positions(stride_lengths, step_headings):
     return rel_positions
 
 
-def compute_step_positions(acce_datas, ahrs_datas, posi_datas):
+def compute_step_positions(acce_datas, ahrs_datas, posi_datas, use_posi=True):
     step_timestamps, step_indexs, step_acce_max_mins = compute_steps(acce_datas)
     headings = compute_headings(ahrs_datas)
     stride_lengths = compute_stride_length(step_acce_max_mins)
     step_headings = compute_step_heading(step_timestamps, headings)
     rel_positions = compute_rel_positions(stride_lengths, step_headings)
-    if(not(posi_datas)):
+    if(not(use_posi)):
         return rel_positions
     step_positions = correct_positions(rel_positions, posi_datas)
 
