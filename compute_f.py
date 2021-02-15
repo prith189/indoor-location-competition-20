@@ -356,6 +356,8 @@ def compute_step_positions(acce_datas, ahrs_datas, posi_datas):
     stride_lengths = compute_stride_length(step_acce_max_mins)
     step_headings = compute_step_heading(step_timestamps, headings)
     rel_positions = compute_rel_positions(stride_lengths, step_headings)
+    if(posi_datas==None):
+        return rel_positions
     step_positions = correct_positions(rel_positions, posi_datas)
 
     return step_positions
